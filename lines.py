@@ -72,24 +72,51 @@ for points in lines:
         linelst.append(points[0][0:2])
         linelst.append(points[0][2:])
 
-set1=[]
-set2=[]
-firstintercept=points[0][0][1]-(points[0][0][0]*slopelst[0])
+sides=[]
+#print(lines)
+x1, y1, x2, y2 = lines[0][0]
+firstintercept=y1-(x1*slopelst[0])
+print(f"Reference intercept: {firstintercept}")
+max,min=0,100000
+reference=0
 for x in range(len(lines)):
-    x1, y1, x2, y2 = points[0]
+    x1, y1, x2, y2 = lines[x][0]
     slope=slopelst[x]
     yintercept=y1-(x1*slope)
-    if yintercept <= firstintercept+100 and yintercept >= firstintercept-100:
-        lines[x].append(1)
+    if yintercept<min:
+        min=yintercept
+    elif yintercept>max:
+        max=yintercept
+    #print(yintercept)
+reference=(max+min)/2
+print(f"MAX: {max} MIN: {min}")
+print(f"REFERENCE: {reference}")
+for x in range(len(lines)):
+    x1, y1, x2, y2 = lines[x][0]
+    slope=slopelst[x]
+    yintercept=y1-(x1*slope)
+    print(f"ycept: {yintercept}")
+    #print(yintercept)
+    distance=100
+    if yintercept >=reference :
+        sides.append(1)
+        # np.append(lines[x], 1)
+        #lines[x].append(1)
     else:
-        lines[x].append(0)
+        sides.append(0)
+        # np.append(lines[x], 1)
+        # lines[x].append(0)
 #0 is one side, 1 is another side
 
-for x in lines;
-    x1, y1, x2, y2 = x[0]
-    if x[1]==1:
-        cv.line(img,(x1,y1),(x2,y2),(255,255,0),4)
-    if x[1]==0:
+print(lines)
+print(sides)
+
+for x in range(len(lines)):
+    x1, y1, x2, y2 = lines[x][0]
+    if sides[x]==1:
+        cv.line(img,(x1,y1),(x2,y2),(0,0,255),4)
+    if sides[x]==0:
+        cv.line(img,(x1,y1),(x2,y2),(0,255,0),4)
 
 min1x=0
 min2x=0
@@ -148,7 +175,6 @@ cv.imshow('frame', img)  # Initial Capture
 cv.waitKey()
 img.release()
 cv.destroyAllWindows()
-
 
 
 
